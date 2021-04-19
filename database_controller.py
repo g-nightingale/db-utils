@@ -74,4 +74,7 @@ class DatabaseController:
 
             return df
         else:
+            connect.commit()
+            connect.close()
+
             return rows
