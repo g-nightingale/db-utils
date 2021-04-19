@@ -31,7 +31,7 @@ class DatabaseController:
 
         # Populate the tables with data
         for record in records:
-            values = ','.join(map(str, record))
+            values = ','.join([f"'{x}'" if isinstance(x, str) else str(x) for x in record])
             self._access_database(f"INSERT INTO {table} VALUES ({values})")
 
     def get_table(self, table):
