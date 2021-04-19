@@ -51,7 +51,7 @@ class DatabaseController:
         connect.commit()
         connect.close()
 
-    def _access_database_with_result(self, query, pandas_df=True, table_name=None, parameters=()):
+    def _access_database_with_result(self, query, table_name=None, pandas_df=True, parameters=()):
         """
         Execute a database query and return results in a Pandas DataFrame
         """
