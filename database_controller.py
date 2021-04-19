@@ -51,7 +51,7 @@ class DatabaseController:
         connect.commit()
         connect.close()
 
-    def _access_database_with_result(self, query, table_name=None, parameters=()):
+    def _access_database_with_result(self, query, pandas_df=True, table_name=None, parameters=()):
         """
         Execute a database query and return results in a Pandas DataFrame
         """
@@ -59,16 +59,19 @@ class DatabaseController:
         cursor = connect.cursor()
         rows = cursor.execute(query, parameters).fetchall()
 
-        # Create a DataFrame
-        df = pd.DataFrame(rows)
+        if pandas_df:
+            # Create a DataFrame
+            df = pd.DataFrame(rows)
 
-        # Get column names
-        if table_name is not None:
-            cursor.execute('PRAGMA TABLE_INFO({})'.format(table_name))
-            col_names = [tup[1] for tup in cursor.fetchall()]
-            df.columns = col_names
+            # Get column names
+            if table_name is not None:
+                cursor.execute('PRAGMA TABLE_INFO({})'.format(table_name))
+                col_names = [tup[1] for tup in cursor.fetchall()]
+                df.columns = col_names
 
-        connect.commit()
-        connect.close()
+            connect.commit()
+            connect.close()
 
-        return df
+            return df
+        else:
+            return rows
